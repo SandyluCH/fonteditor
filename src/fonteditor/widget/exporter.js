@@ -8,12 +8,20 @@ import resolvettf from './util/resolvettf';
 import exportRender from '../template/export-render';
 import download from './util/download';
 import JSZip from 'JSZip';
+import glyf2svgfile from './util/glyf2svgfile';
 
 const font = core.Font;
 const ttf2icon = core.ttf2icon;
 
 core.woff2.init('dep/woff2/woff2.wasm');
-
+function getSvg(ttf,glyf) {
+    let opt = {
+        fillColor:'#d6d6d6',
+        size: +200,
+        unitsPerEm: ttf.head.unitsPerEm
+    };
+    return glyf2svgfile(glyf, opt);
+}
 /**
  * 导出SFNT结构字体 base64
  *
@@ -97,6 +105,14 @@ function exportFile(ttf, options) {
                     'example-symbol.html',
                     exportRender.renderSymbolExample(iconData)
                 );
+                
+                // 将字体图标拆分为单个svg下载
+                let svgAssets = fontzip.folder('svg-assets')
+                for(let index = 0; index < ttf.glyf.length; index++){
+                    let tempGlyf =  ttf.glyf[index]
+                    let svgText = getSvg(ttf, tempGlyf)
+                    svgAssets.file((tempGlyf.name || 'svg') + '.svg', (svgText))
+                }
 
                 // zip
                 base64Str = 'data:application/zip;base64,' + zip.generate({
