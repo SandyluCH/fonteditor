@@ -83,12 +83,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\/(index|empty|editor)\.tpl$/,
+                test: /(index|empty|editor)\.tpl$/,
                 loader: 'index-loader'
             },
             {
-                test: /template\/(.+?)\.tpl$/,
-                loader: 'tpl-loader'
+                test: /\.tpl$/,
+                loader: 'tpl-loader',
+                include: path.resolve(__dirname, '../src/fonteditor/template')
             },
             {
                 test: /\.lesstpl$/,
