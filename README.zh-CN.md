@@ -22,6 +22,8 @@ npm install && npm run dev
 * `index.tpl`为入口模板文件，根据`index.tpl`生成`index.html`和`index-en.html`入口文件。
 * jszip模块3.0 api有变动，若要升级，需要测试和修改导出zip模式
 
+此模式可操作字体编辑导入ttf预览等
+
 ### 编译:
 
 ```
